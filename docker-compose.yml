@@ -5,15 +5,15 @@ services:
       dockerfile: Dockerfile.request-generator
     depends_on:
       - web-server
-
   web-server:
     build:
       context: .
       dockerfile: Dockerfile.web-server
-
   tcpdump:
     build:
       context: .
       dockerfile: Dockerfile.tcpdump
-    command: ["tcpdump", "-i", "any", "-A"]
+    privileged: true
+    cap_add:
+      - ALL
     network_mode: "service:web-server"

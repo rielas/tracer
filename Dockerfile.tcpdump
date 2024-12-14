@@ -1,3 +1,9 @@
-FROM alpine:latest
-RUN apk add --no-cache tcpdump
-CMD ["tcpdump", "-i", "eth0", "-A"]
+FROM ubuntu:24.04
+
+RUN apt-get update && \
+    apt-get install -y bpftrace linux-headers-generic kmod && \
+    apt-get clean
+
+COPY capture.bt /app/capture.bt
+
+CMD ["bpftrace", "/app/capture.bt"]

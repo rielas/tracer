@@ -1,0 +1,10 @@
+tracepoint:net:netif_receive_skb
+{
+    printf("Packet received on interface: %s\n", args->dev_name);
+}
+
+tracepoint:net:net_dev_queue
+{
+    printf("Packet sent from interface: %s\n", args->name);
+}
+
