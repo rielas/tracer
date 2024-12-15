@@ -10,10 +10,14 @@ services:
       context: .
       dockerfile: Dockerfile.web-server
   tcpdump:
-    build:
-      context: .
-      dockerfile: Dockerfile.tcpdump
+    image: quay.io/iovisor/bpftrace:latest
     privileged: true
     cap_add:
       - ALL
-    network_mode: "service:web-server"
+    network_mode: host
+    command: ["bpftrace", "-e", 'tracepoint:syscalls:sys_enter_open { printf("%s %s\n", comm, str(args->filename)); }']
+    pid: host
+    volumes:
+      - /usr/src:/usr/src:ro
+      - /lib/modules/:/lib/modules:ro
+      - /sys/kernel/debug/:/sys/kernel/debug:rw
