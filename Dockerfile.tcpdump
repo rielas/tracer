@@ -38,8 +38,5 @@ RUN make -C xdp-tools/ install
 
 COPY capture.bt /app/capture.bt
 
-# Syscall count by thread name
-#bpftrace -e 'tracepoint:raw_syscalls:sys_enter { @[comm] = count(); }'
 # CMD ["bpftrace", "/app/capture.bt"]
 CMD ["bpftrace", "-e", "tracepoint:raw_syscalls:sys_enter { @[comm] = count(); }"]
-
